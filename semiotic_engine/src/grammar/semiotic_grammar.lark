@@ -1,0 +1,16 @@
+?start: expr
+
+?expr: term
+     | expr operator expr    -> binary_op
+     | "⦰" "(" expr ")"      -> nullify
+
+?term: SYMBOL
+     | "∇" "(" SYMBOL ")"    -> gradient
+     | "℘" "(" SYMBOL ")"    -> powerset
+
+operator: "⊕" | "⊻" | "⋈"
+
+SYMBOL: /[A-Za-z_][A-Za-z0-9_]*/
+
+%import common.WS
+%ignore WS
