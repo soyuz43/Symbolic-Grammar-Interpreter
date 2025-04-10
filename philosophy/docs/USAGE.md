@@ -175,6 +175,23 @@ Copy
 **Resolution**: Either encode or delete from `holding_patterns/`
 
 ---
+## 🧪 Advanced Epistemic Utilities
+### Pre-Mutation
+Contradictions go to [quarantine/contradiction_logs](CONTRADICTION_CLASSIFICATION.md#pre-mutation-workflow)
+
+
+For mutation tracking, contradiction analysis, and entropy visualization, see:  
+📂 [`docs/FALSIFICATION.md`](FALSIFICATION.md)
+
+### `mutate_artifact.sh` Requires Contradiction Audit
+```mermaid
+flowchart LR
+    A[Parent Artifact] --> B{{Has contradictions.yaml?}}
+    B -->|Yes| C[Mutate]
+    B -->|No| D[Run extract_contradictions.sh]
+    D --> E[Generate contradictions.yaml]
+    E --> C
+```
 
 ## ▶️ Next Steps
 ```bash

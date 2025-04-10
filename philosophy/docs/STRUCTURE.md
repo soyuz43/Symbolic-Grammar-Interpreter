@@ -93,6 +93,10 @@ flowchart LR
 | **Output Example** | `gen1_tau_falsify/` | `gen5_ideational/` |
 
 ---
+
+### Contradiction Ontology
+See [type registry rules](CONTRADICTION_CLASSIFICATION.md#typology-lifecycle).
+---
 ## New Entropy Index Artifacts
 
 ```bash
