@@ -150,12 +150,3 @@ This document is not a policy — it is a **systemic axiom**. If your toolchain 
 This file must be version-controlled. Changes require a justification encoded in `ETHICS.md`.
 
 ---
-
-Let me know if you'd like a CLI enforcement script (`check_trace_integrity.sh`) that crawls all `entropy_index/` trees and verifies:
-
-- Directory location vs trace type
-- Manifest field coherence
-- Generation lineage
-- Breach violations
-
-This would let you automate enforcement of the structure you’ve now formally declared.
