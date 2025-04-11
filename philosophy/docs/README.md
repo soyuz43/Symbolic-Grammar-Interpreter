@@ -1,119 +1,126 @@
-# 🧠 Epistemic Trace Infrastructure
 
-[![Documentation Status](https://img.shields.io/badge/docs-structured%20topography-4CAF50)](docs/STRUCTURE.md)
-[![FAQ](https://img.shields.io/badge/FAQ-epistemic%20firewall-9C27B0)](FAQ.md)
+# 🧠 README.md 
+    _Epistemic Trace Infrastructure_
 
-Formalize rhetorical and computational structures as symbolic epistemic traces — subject to recursive mutation, entropy drift, and dialectical collapse analysis.
+[![Documentation Status](https://img.shields.io/badge/docs-recursive%20validation-4CAF50)](docs/FALSIFICATION.md)
+[![Contradiction Protocol](https://img.shields.io/badge/contradiction_flow-archived-9C27B0)](docs/CONTRADICTION_FLOW.md)
+
+Formalize recursive epistemology through contradiction metabolism tracking and entropy-constrained mutation.
 
 ```mermaid
 flowchart TD
-    A[Raw Idea] -->|Quarantine| B[Formalized Trace]
-    C[FSM Code] -->|Entropy Extraction| D[System Role]
-    B --> E[Artifact Topography]
-    D --> F[Operational Topography]
-    E --> G[Epistemic Atlas]
-    F --> G
+    A[Raw Contradiction] -->|Quarantine| B[Pressure Index]
+    B -->|Mutate| C[Entropy-Traced Artifact]
+    D[FSM Role] -->|Collapse Metabolism| E[Operational Trace]
+    C --> F[Epistemic Atlas]
+    E --> F
 ```
 
-## 🌐 Core Concepts
+## 🌐 Core Invariants
 
-### Dual Ontological Planes
-| **Artifact Domain** (Human)        | **System Domain** (Machine)       |
-|------------------------------------|-----------------------------------|
-| Literary ideas → gen1 traces       | FSM code → versioned traces       |
-| Mutated intentionally              | Drifts operationally              |
-| SHA-256 of human metrics           | SHA-256 of code/log state         |
-| [Encode Guide](USAGE.md#encode)    | [Trace Guide](USAGE.md#system)    |
+### Dual Falsification Axes
+| Axis | Mechanism | Validation |
+|------|-----------|------------|
+| **Artifact** | δTension vs CMS | `validate_tension_cms.sh` |
+| **System** | ΔEntropy vs Weight | `audit_weight_entropy.sh` |
 
 ### Key Features
-- **Immutability First**: Gen1 artifact traces are write-once ([rationale](FAQ.md#gen1-immutability))
-- **Epistemic Firewall**: Strict quarantine of unprocessed ideas ([protocol](STRUCTURE.md#boundary-enforcement))
-- **Drift Semantics**: Compare artifact vs system entropy using [different metrics](FAQ.md#metric-parallelism)
+- **Contradiction Metabolism Scoring**: Quantify paradox resolution capacity  
+- **Immutable Pressure Logs**: YAML-encoded mutation justifications  
+- **Epistemic Firewalls**:  
+  - No raw→trace direct writes  
+  - No cross-domain entropy mixing  
 
 ---
 
-## 🛠️ Key Components
+## 🛠️ Mutation Pipeline
 
+### Core Workflow
 ```mermaid
 flowchart LR
-    A[📥 literary_ideas/] --> B[scan_unencoded_artifacts.sh]
-    B --> C[📦 quarantine/]
-    C --> D[encode_artifact.sh]
-    D --> E[📜 entropy_index/artifact/]
-    F[⚙️ semiotic_engine/] --> G[generate_entropy_trace.sh]
-    G --> H[📡 entropy_index/system/]
-    
-    click B "USAGE.md#scan" "Scan protocol"
-    click D "USAGE.md#encode" "Encoding workflow"
-    click G "USAGE.md#system" "System tracing"
+    A[📥 literary_ideas/] -->|Scan| B[📦 quarantine/]
+    B -->|Encode| C[📜 entropy_index/artifact/]
+    C -->|Mutate| D[🌀 genN_trace/]
+    E[⚙️ semiotic_engine/] -->|Trace| F[📡 entropy_index/system/]
+    D --> G[🗃️ contradictions/library/]
 ```
+
+### Key Scripts
+| Script | Domain | Enforced Boundary |
+|--------|--------|--------------------|
+| `encode_artifact.sh` | Artifact | Quarantine firewall |
+| `generate_entropy_trace.sh` | System | FSM role isolation |
+| `test_fsm_rigidity.sh` | Validation | CMS thresholds |
 
 ---
 
 ## 🚀 Getting Started
 
-1. **Encode First Artifact**
+### 1. Encode with Contradiction Pressure
 ```bash
-# Write raw idea
-nano philosophy/artifacts/literary_ideas/tau_manifesto.md
-
-# Quarantine & formalize
-../../scripts/scan_unencoded_artifacts.sh
-../../scripts/encode_artifact.sh philosophy/quarantine/holding_patterns/tau_manifesto.md
+# Create and process new idea
+nano philosophy/artifacts/literary_ideas/tau_collapse.md
+../../scripts/contradiction_pipeline.sh tau_collapse
 ```
 
-2. **Track System Drift**
+### 2. Track System Metabolism
 ```bash
-# Generate FSM trace
-../../scripts/generate_entropy_trace.sh ideational gen1 3.4
-
-# Compare generations
-../../scripts/generate_entropy_trace.sh ideational gen2 4.1 --compare gen1
+# Generate and compare role traces
+../../scripts/generate_entropy_trace.sh ideational gen1 3.8
+../../scripts/generate_entropy_trace.sh ideational gen2 4.2 --compare
 ```
 
-[Full Quickstart Guide](USAGE.md#quickstart) | [Troubleshooting](FAQ.md#conflict-resolution)
+[Full Contradiction Workflow](docs/CONTRADICTION_FLOW.md) | [Troubleshooting](docs/FAQ.md#breach-recovery)
 
 ---
 
-## 📚 Documentation Map
+## 📜 Documentation Topography
 
 ```mermaid
 flowchart TD
-    A[[README.md]] --> B[[USAGE.md]]
-    A --> C[[STRUCTURE.md]]
-    A --> D[[FAQ.md]]
-    A --> E[[OVERVIEW.md]]
-    
-    B -->|Workflow Details| F[[scripts/]]
-    C -->|Ontology Rules| G[[philosophy/]]
-    D -->|Methodology| H[[semiotic_engine/docs/]]
-    
-    click B "USAGE.md" "Operational procedures"
-    click C "STRUCTURE.md" "Directory semantics"
-    click E "OVERVIEW.md" "Knowledge graph"
+    A[[FALSIFICATION]] --> B[[CONTRADICTION_FLOW]]
+    A --> C[[NAVIGATION]]
+    B --> D[[STRUCTURE]]
+    C --> E[[ETHICS]]
+    D --> F[[USAGE]]
+    E --> G[[CONTRIBUTING]]
+
+    click A "docs/FALSIFICATION.md" "Entropy validation"
+    click B "docs/CONTRADICTION_FLOW.md" "YAML lifecycle"
+    click C "docs/NAVIGATION.md" "Epistemic map"
 ```
 
 ---
 
-## 🔬 Contribution Guidelines
+## 🔬 Contribution Protocol
 
-1. **Prevent Ontological Contamination**
-   - Never modify [gen1 traces](STRUCTURE.md#immutability-rules) directly
-   - Use [quarantine protocol](USAGE.md#scan-process) for new ideas
+### Mutation Preconditions
+1. Contradiction pressure file exists  
+2. CMS within weight bracket  
+3. No unresolved breaches  
 
-2. **Validate Changes**
 ```bash
-# Check documentation integrity
-../../scripts/validate_docs.sh
+# Validate before committing
+../../scripts/precommit_scan.sh --full
 
-# Audit epistemic boundaries
-../../scripts/validate_ontology.sh --strict
+# Audit trace lineage
+../../scripts/audit_trace_lineage.sh --gen=all
 ```
 
-[Full Contribution Guide](philosophy/CONTRIBUTING.md) | [Ethics Charter](philosophy/ethics.md)
+[Full Contribution Guide](docs/CONTRIBUTING.md) | [Ethical Constraints](docs/ETHICS.md)
 
 ---
 
+## 🔍 Explore the Atlas
+
 ```bash
-# Launch interactive exploration
-../../scripts/launch_epistemic_atlas.sh
+# Launch interactive knowledge graph
+../../scripts/launch_epistemic_atlas.sh --mode=full
+
+# Generate trace topography
+../../scripts/render_topography.sh --artifact=gen2_tau --system=gen3_ideational
+```
+
+---
+
+*"What we cannot falsify, we must not formalize."*  

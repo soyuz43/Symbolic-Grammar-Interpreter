@@ -8,7 +8,7 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
-RAW_DIR="philosophy/artifacts/literary_ideas"
+RAW_DIR="philosophy/quarantine/raw_pool"
 HOLD_DIR="philosophy/quarantine/holding_patterns"
 INDEX_DIR="philosophy/entropy_index"
 
