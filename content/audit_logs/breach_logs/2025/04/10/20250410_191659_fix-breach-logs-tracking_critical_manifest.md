@@ -1,0 +1,8 @@
+## CRITICAL
+- Branch: fix-breach-logs-tracking
+- Category: manifest
+- Message: Missing manifest: philosophy/artifacts/literary_ideas
+- Hash: `N/A`
+- Timestamp: Fri Apr 11 00:16:59 UTC 2025
+- Action: BLOCKED
+- Log ID: 20250410_191659_fix-breach-logs-tracking_critical_manifest
