@@ -1,0 +1,1 @@
+../../../philosophy/breach/breach_logs/2025/04/10/20250410_192352_tweak-docs_critical_manifest.md

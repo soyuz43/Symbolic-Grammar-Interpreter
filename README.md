@@ -1,70 +1,91 @@
 # Symbolic Grammar Interpreter
 
-A falsifiability-oriented system for recursive symbolic mutation.
-
-This project exists to test whether **rhetorical artifacts** and **computational systems** can evolve under measurable contradiction — not through human judgment, but through structural enforcement.
+> A recursive symbolic system for controlled evolution of structured knowledge.
 
 ---
 
 ## Why It Exists
 
-Modern systems often simulate learning without acknowledging contradiction. This project inverts that model.
+Modern software systems drift.  
+Documentation rots.  
+Specifications contradict themselves.
 
-**Here, contradiction is not an error. It is the fuel.**
+**This project builds an infrastructure layer** to:
+- Detect semantic contradictions before they metastasize
+- Track evolution of knowledge as immutable, auditable traces
+- Formalize change processes without enforcing rigidity
 
-- Artifacts mutate **only if contradiction is detected**
-- FSM roles evolve **only if their collapse index diverges**
-- Entropy drift is **measured**, not inferred
-
-It is a space where **philosophical claims are encoded like code**, and **code is tested like philosophy**.
-
----
-
-## What It Traces
-
-Every transformation in the system is stored as a **generation**.  
-Each generation:
-
-- Records the **tension** (semantic instability)
-- Measures the **collapse log** (contradictions triggered)
-- Computes **entropy** from those inputs
-
-If the change cannot be justified symbolically, it cannot be committed structurally.
+Instead of fighting drift, it **harnesses it as an input**.
 
 ---
 
-## System Structure
+## How It Works
 
-The system is divided into domains:
+Every idea, spec, or system trace passes through an enforced lifecycle:
+- Proposed ideas enter a *staging environment*.
+- Contradictions are detected, logged, and metabolized.
+- Only validated evolutions are committed into immutable *versions*.
+- Structural validation scripts continuously monitor boundary integrity.
 
-- `artifacts/` — Raw rhetorical material
-- `quarantine/` — Extracted contradiction logs
-- `entropy_index/` — Immutable traces of mutation
-- `contradictions/` — A library of contradiction forms and logs
-- `scripts/` — CLI tools to enforce all of the above
-
-All behavior is governed by executable logic, not loose guidelines.
+**Mutation is allowed. Corruption is not.**
 
 ---
 
-## Core Principles
+## Folder Overview
 
-- **Traceability** — No artifact changes without generational lineage
-- **Falsifiability** — Every transformation is hashable and testable
-- **Ontological Separation** — Code, rhetoric, and logic never overwrite each other
-- **Collapse as Input** — If it doesn't contradict, it doesn't evolve
+| Folder | Purpose |
+|:---|:---|
+| `/content/versions/` | Immutable version history of finalized traces |
+| `/content/staging/` | In-progress drafts and pending contradictions |
+| `/content/audit_logs/` | Breach detection and audit reports |
+| `/content/raw_inputs/` | Incoming, unreviewed proposals |
+| `/content/specs/` | Documentation, protocols, and methodology |
+| `/content/conflict_maps/` | Contradiction libraries and pressure logs |
+| `/engine/` | Core symbolic engine (FSM, dialectical parsers) |
+| `/scripts/` | CLI automation tools for validation and mutation |
 
 ---
 
-## Learn More
+## Core Engineering Principles
 
-For full epistemic rules, typology schemas, and mutation protocols, see:
+- **Traceability** — Every transformation is recorded, compared, and versioned
+- **Falsifiability** — Contradictions are not errors; they are signals
+- **Structural Integrity** — Strict separation of raw, staged, and validated domains
+- **Controlled Drift** — Evolution is encouraged, but auditable
+
+---
+
+## Quickstart
+
+```bash
+# Scan incoming ideas
+./scripts/scan_unencoded_artifacts.sh
+
+# Encode an idea under contradiction pressure
+./scripts/encode_artifact.sh <artifact_name>
+
+# Track system metabolism and entropy shifts
+./scripts/generate_entropy_trace.sh <role> <generation>
+
+# Validate full system integrity
+./scripts/validate_topography.sh --strict
 ```
-philosophy/docs/
-├── FALSIFICATION.md
-├── CONTRADICTION_CLASSIFICATION.md
-├── STRUCTURE_Separation_of_Concerns.md
-└── USAGE.md
-```
 
-> This is not just version control for ideas — it's a controlled demolition of dogma through contradiction logging and entropy tracing.
+See `/content/specs/USAGE.md` for full command reference.
+
+---
+
+## Explore More
+
+- [Epistemic Trace Infrastructure Overview](./content/specs/OVERVIEW.md)
+- [Contradiction Management Lifecycle](./content/specs/CONTRADICTION_FLOW.md)
+- [Falsification Enforcement Protocols](./content/specs/FALSIFICATION.md)
+
+If you are curious about advanced contradiction metabolism workflows, refer to the `/invitation/REDME.md`.
+
+---
+
+# **This is the infrastructure for recursive integrity.**
+
+---
+
