@@ -1,4 +1,3 @@
-cat > LICENSE.md << 'EOF'
 MIT License
 
 Copyright (c) 2025 William Stetar
