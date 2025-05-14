@@ -18,7 +18,7 @@ flowchart TD
 ### 1. **Ontological Purity**
 - **Artifacts** (literary ideas) and **System** (FSM roles) *must never intersect*  
 - Use [scan_unencoded_artifacts.sh](USAGE.md#scan) before submitting raw ideas  
-- System contributions require [paradox detection logs](philosophy/dialectical_cores/)  
+- System contributions require [paradox detection logs](content/specs/dialectical_cores/)  
 
 ### 2. **Gen1 Immutability**
 ```mermaid
@@ -141,4 +141,4 @@ flowchart LR
 ```
 
 [Begin Contribution](USAGE.md#quickstart){ .md-button }  
-[Report Epistemic Breach](philosophy/docs/ETHICS.md#reporting){ .md-button }  
+[Report Epistemic Breach](content/specs/ETHICS.md#reporting){ .md-button }  
