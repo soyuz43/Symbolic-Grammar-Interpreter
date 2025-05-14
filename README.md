@@ -81,7 +81,7 @@ See `/content/specs/USAGE.md` for full command reference.
 - [Contradiction Management Lifecycle](./content/specs/CONTRADICTION_FLOW.md)
 - [Falsification Enforcement Protocols](./content/specs/FALSIFICATION.md)
 
-If you are curious about advanced contradiction metabolism workflows, refer to the `/invitation/REDME.md`.
+If you are curious about advanced contradiction metabolism workflows, refer to the `/invitation/README.md`.
 
 ---
 
