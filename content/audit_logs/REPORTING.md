@@ -150,5 +150,5 @@ rm -rf entropy_index/artifact/gen1_compromised/
 ../../scripts/generate_breach_report.sh --severity=major
 ```
 
-[Return to Ethics Charter](../../docs/ETHICS.md){ .md-button }  
+[Return to Ethics Charter](../specs/ETHICS.md){ .md-button }  
 [View Active Breaches](./breach_logs/ACTIVE.md){ .md-button }  
