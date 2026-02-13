@@ -1,126 +1,161 @@
+Below is a stripped-down, governance-legible rewrite.
+No emojis.
+Less philosophy.
+Clearer compliance / audit framing.
+Retains documentation links and structure.
 
-# 🧠 README.md 
-    _Epistemic Trace Infrastructure_
+---
 
-[![Documentation Status](https://img.shields.io/badge/docs-recursive%20validation-4CAF50)](docs/FALSIFICATION.md)
+# README.md
+
+*Epistemic Trace Infrastructure*
+
+[![Documentation Status](https://img.shields.io/badge/docs-validation-4CAF50)](docs/FALSIFICATION.md)
 [![Contradiction Protocol](https://img.shields.io/badge/contradiction_flow-archived-9C27B0)](docs/CONTRADICTION_FLOW.md)
 
-Formalize recursive epistemology through contradiction metabolism tracking and entropy-constrained mutation.
-
-```mermaid
-flowchart TD
-    A[Raw Contradiction] -->|Quarantine| B[Pressure Index]
-    B -->|Mutate| C[Entropy-Traced Artifact]
-    D[FSM Role] -->|Collapse Metabolism| E[Operational Trace]
-    C --> F[Epistemic Atlas]
-    E --> F
-```
-
-## 🌐 Core Invariants
-
-### Dual Falsification Axes
-| Axis | Mechanism | Validation |
-|------|-----------|------------|
-| **Artifact** | δTension vs CMS | `validate_tension_cms.sh` |
-| **System** | ΔEntropy vs Weight | `audit_weight_entropy.sh` |
-
-### Key Features
-- **Contradiction Metabolism Scoring**: Quantify paradox resolution capacity  
-- **Immutable Pressure Logs**: YAML-encoded mutation justifications  
-- **Epistemic Firewalls**:  
-  - No raw→trace direct writes  
-  - No cross-domain entropy mixing  
+A deterministic snapshot–invariant–drift system for controlled artifact mutation and traceable state transitions.
 
 ---
 
-## 🛠️ Mutation Pipeline
+## Overview
 
-### Core Workflow
-```mermaid
-flowchart LR
-    A[📥 literary_ideas/] -->|Scan| B[📦 quarantine/]
-    B -->|Encode| C[📜 entropy_index/artifact/]
-    C -->|Mutate| D[🌀 genN_trace/]
-    E[⚙️ semiotic_engine/] -->|Trace| F[📡 entropy_index/system/]
-    D --> G[🗃️ contradictions/library/]
-```
+This repository implements a structured change-control framework that:
 
-### Key Scripts
-| Script | Domain | Enforced Boundary |
-|--------|--------|--------------------|
-| `encode_artifact.sh` | Artifact | Quarantine firewall |
-| `generate_entropy_trace.sh` | System | FSM role isolation |
-| `test_fsm_rigidity.sh` | Validation | CMS thresholds |
+* Captures immutable snapshots of artifacts and system roles
+* Applies defined constraint checks before mutation
+* Ingests structured contradiction/pressure inputs
+* Computes entropy-based drift metrics
+* Logs lineage and breach events
+
+The goal is reproducible, auditable evolution of structured artifacts.
 
 ---
 
-## 🚀 Getting Started
+## Core Invariants
 
-### 1. Encode with Contradiction Pressure
-```bash
-# Create and process new idea
-nano philosophy/artifacts/literary_ideas/tau_collapse.md
-../../scripts/contradiction_pipeline.sh tau_collapse
-```
+### Artifact Controls
 
-### 2. Track System Metabolism
-```bash
-# Generate and compare role traces
-../../scripts/generate_entropy_trace.sh ideational gen1 3.8
-../../scripts/generate_entropy_trace.sh ideational gen2 4.2 --compare
-```
+| Control            | Mechanism             | Validation Script          |
+| ------------------ | --------------------- | -------------------------- |
+| Tension thresholds | δTension vs CMS       | `validate_tension_cms.sh`  |
+| Manifest integrity | Hash + boundary rules | `check_trace_integrity.sh` |
 
-[Full Contradiction Workflow](docs/CONTRADICTION_FLOW.md) | [Troubleshooting](docs/FAQ.md#breach-recovery)
+### System Controls
+
+| Control              | Mechanism                | Validation Script         |
+| -------------------- | ------------------------ | ------------------------- |
+| Entropy drift bounds | ΔEntropy vs Weight       | `audit_weight_entropy.sh` |
+| Role isolation       | FSM boundary enforcement | `test_fsm_rigidity.sh`    |
 
 ---
 
-## 📜 Documentation Topography
+## Control Features
 
-```mermaid
-flowchart TD
-    A[[FALSIFICATION]] --> B[[CONTRADICTION_FLOW]]
-    A --> C[[NAVIGATION]]
-    B --> D[[STRUCTURE]]
-    C --> E[[ETHICS]]
-    D --> F[[USAGE]]
-    E --> G[[CONTRIBUTING]]
+* Structured contradiction intake (YAML-based)
+* Immutable generation directories
+* Deterministic entropy hashing
+* Boundary enforcement between raw, staged, and validated domains
+* Typed breach logging
 
-    click A "docs/FALSIFICATION.md" "Entropy validation"
-    click B "docs/CONTRADICTION_FLOW.md" "YAML lifecycle"
-    click C "docs/NAVIGATION.md" "Epistemic map"
+No artifact mutation bypasses validation.
+
+---
+
+## Mutation Pipeline
+
+### Artifact Workflow
+
+```
+raw_inputs/ → quarantine/ → entropy_index/artifact/ → genN_trace/
+```
+
+### System Workflow
+
+```
+semiotic_engine/ → entropy_index/system/
+```
+
+Contradiction inputs are processed from:
+
+```
+contradictions/library/
 ```
 
 ---
 
-## 🔬 Contribution Protocol
+## Key Scripts
 
-### Mutation Preconditions
-1. Contradiction pressure file exists  
-2. CMS within weight bracket  
-3. No unresolved breaches  
+| Script                      | Function                                     |
+| --------------------------- | -------------------------------------------- |
+| `encode_artifact.sh`        | Encode artifact into trace domain            |
+| `mutate_artifact.sh`        | Controlled mutation with pressure validation |
+| `generate_entropy_trace.sh` | Produce system-level trace                   |
+| `check_trace_integrity.sh`  | Structural validation                        |
+| `precommit_scan.sh`         | Pre-commit integrity enforcement             |
+
+---
+
+## Getting Started
+
+### Encode an Artifact
 
 ```bash
-# Validate before committing
+../../scripts/encode_artifact.sh <artifact_name>
+```
+
+### Mutate Under Constraint
+
+```bash
+../../scripts/falsification/mutate_artifact.sh <artifact> <prev_gen> <new_gen> --pressure <yaml>
+```
+
+### Validate Integrity
+
+```bash
+../../scripts/validate_topography.sh --strict
+```
+
+See:
+
+* [Falsification Protocol](docs/FALSIFICATION.md)
+* [Contradiction Workflow](docs/CONTRADICTION_FLOW.md)
+* [Usage Guide](docs/USAGE.md)
+
+---
+
+## Contribution Controls
+
+Before committing:
+
+1. All contradiction inputs must be structured and present
+2. Tension and entropy thresholds must pass validation
+3. No unresolved breach logs
+
+Run:
+
+```bash
 ../../scripts/precommit_scan.sh --full
-
-# Audit trace lineage
 ../../scripts/audit_trace_lineage.sh --gen=all
 ```
 
-[Full Contribution Guide](docs/CONTRIBUTING.md) | [Ethical Constraints](docs/ETHICS.md)
+See:
+
+* [Contribution Guide](docs/CONTRIBUTING.md)
+* [Ethical Constraints](docs/ETHICS.md)
 
 ---
 
-## 🔍 Explore the Atlas
+## Scope
 
-```bash
-# Launch interactive knowledge graph
-../../scripts/launch_epistemic_atlas.sh --mode=full
+This system enforces:
 
-# Generate trace topography
-../../scripts/render_topography.sh --artifact=gen2_tau --system=gen3_ideational
-```
+* Deterministic snapshot capture
+* Explicit invariant checks
+* Controlled mutation
+* Immutable trace lineage
+
+It does not perform semantic truth evaluation or replace formal verification.
 
 ---
 
-*"What we cannot falsify, we must not formalize."*  
+Analytically: this revision removes metaphorical and philosophical framing, replaces recursive/epistemic language with compliance-oriented terminology, and positions the project as a deterministic change-control and audit framework.
