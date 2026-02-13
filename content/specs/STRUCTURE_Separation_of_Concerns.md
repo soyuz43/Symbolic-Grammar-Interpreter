@@ -1,119 +1,176 @@
-# STRUCTURE: Separation of Concerns Protocol
+# STRUCTURE: Separation of Concerns Policy
 
-## 🧭 Purpose
-Enforce boundaries between symbolic domains to prevent ontological collapse. This document defines **falsifiable constraints** for maintaining epistemic integrity across rhetorical, operational, and interpretive layers.
+## Purpose
 
----
+This document defines structural boundaries between repository domains and establishes enforceable constraints for maintaining trace integrity.
 
-## 🔗 Domain Ontology
+The objective is to prevent:
 
-### Core Namespaces
-| Domain | Path | Mutability | Mutation Tool | Validation |
-|--------|------|------------|---------------|------------|
-| **Raw Input** | `/artifacts/raw_inputs/` | Uncontrolled | None | Manual review |
-| **Formal Artifacts** | `/philosophy/entropy_index/artifact/` | Gen1-immutable | `encode_artifact.sh` | SHA-256 manifest |
-| **System Roles** | `/philosophy/entropy_index/system/` | Versioned | `generate_entropy_trace.sh` | Hamming distance |
-| **FSM Logic** | `/semiotic_engine/src/fsm/` | Code-mutable | Direct edits | `test_fsm_rigidity.sh` |
-| **Quarantine** | `/philosophy/quarantine/` | Ephemeral | `scan_unencoded_artifacts.sh` | Timestamp audit |
-| **Breaches** | `/philosophy/breach/breach_logs/` | Append-only | Automated detectors | Immutable hashes |
+* Cross-domain contamination
+* Unauthorized mutation paths
+* Ambiguous artifact lineage
+* Integrity loss through bypassed validation
+
+All constraints defined here are machine-checkable and enforced through validation scripts and breach logging.
 
 ---
 
-## 🔐 Boundary Enforcement
+## Domain Model
 
-### Absolute Prohibitions
-1. **No Cross-Domain Writes**
-   ```bash
-   # ❌ Invalid: System tool writing to artifact space
-   generate_entropy_trace.sh textual gen1 2.3 --output ../entropy_index/artifact/
-   ```
-   **Response**: Auto-log to `breach_logs/` and halt execution
+### Repository Namespaces
 
-2. **No Raw-to-Formal Bypass**
-   ```mermaid
-   flowchart LR
-       A[raw_inputs/] -->|Must pass through| B[quarantine/]
-       B -->|Formalize via| C[encode_artifact.sh]
-       style A stroke:#ff0000
-   ```
+| Domain           | Path                                  | Mutability           | Authorized Tooling            | Validation Mechanism        |
+| ---------------- | ------------------------------------- | -------------------- | ----------------------------- | --------------------------- |
+| Raw Inputs       | `/artifacts/raw_inputs/`              | Uncontrolled         | None                          | Manual review               |
+| Formal Artifacts | `/philosophy/entropy_index/artifact/` | Generation-immutable | `encode_artifact.sh`          | SHA-256 manifest validation |
+| System Roles     | `/philosophy/entropy_index/system/`   | Versioned            | `generate_entropy_trace.sh`   | Entropy delta checks        |
+| FSM Logic        | `/semiotic_engine/src/fsm/`           | Code-mutable         | Direct edits                  | `test_fsm_rigidity.sh`      |
+| Quarantine       | `/philosophy/quarantine/`             | Temporary            | `scan_unencoded_artifacts.sh` | Timestamp + presence checks |
+| Breach Logs      | `/philosophy/breach/breach_logs/`     | Append-only          | Automated logging             | Immutable hash verification |
 
-3. **No Weight/Artifact Contamination**
-   - FSM role names (`ideational`, etc.) forbidden in artifact IDs
-   - Artifact tension metrics never influence FSM weight calculations
+Each domain has a defined mutation surface and validation boundary.
 
 ---
 
-## 🧪 Validation Workflow
+## Boundary Enforcement Rules
 
-### Daily Boundary Checks
+### 1. Cross-Domain Write Prohibition
+
+No script or tool may write output into a domain it does not explicitly own.
+
+Example (invalid):
+
 ```bash
-# Verify namespace purity
-./scripts/validate_topography.sh --strict
-
-# Expected output
-✅ Artifact domain: 0 foreign entities
-✅ System domain: 0 rhetorical traces
-❌ Quarantine: 2 unprocessed files (logged)
+generate_entropy_trace.sh textual gen1 2.3 --output ../entropy_index/artifact/
 ```
 
-### Post-Mutation Audit
-```mermaid
-sequenceDiagram
-    Contributor->>+System: Submit change
-    System->>+Validator: Run boundary checks
-    Validator->>+EntropyIndex: Verify hash alignment
-    EntropyIndex-->>-Validator: Validation report
-    Validator-->>-Contributor: Approve/Reject
-```
+Enforcement:
+
+* Execution halted
+* Breach logged to `breach_logs/`
+* Violation classified
 
 ---
 
-## 🚨 Violation Examples
+### 2. Raw-to-Formal Bypass Prohibition
+
+All raw inputs must pass through quarantine before formal encoding.
+
+Valid flow:
+
+```
+raw_inputs/ → quarantine/ → encode_artifact.sh → entropy_index/artifact/
+```
+
+Direct writes to `entropy_index/artifact/` are prohibited.
+
+---
+
+### 3. Metric and Domain Isolation
+
+Artifact metrics and system metrics must remain independent.
+
+* FSM role identifiers may not appear in artifact IDs.
+* Artifact tension values must not influence FSM weight calculations.
+* System entropy values must not be injected into artifact manifests.
+
+Metric independence is enforced during validation runs.
+
+---
+
+## Validation Workflow
+
+### Namespace Validation
+
+```bash
+./scripts/validate_topography.sh --strict
+```
+
+Expected results:
+
+* No foreign entities in artifact domain
+* No rhetorical traces in system domain
+* All quarantine entries timestamped
+
+All violations are logged.
+
+---
+
+### Post-Mutation Verification
+
+Upon mutation:
+
+1. Boundary validation executes
+2. Manifest hash is recalculated
+3. Entropy delta is recorded
+4. Breach logs are appended if violations occur
+
+Mutation cannot proceed if blocking violations are detected.
+
+---
+
+## Violation Examples
 
 ### Category Error
+
+Attempting to encode system code as an artifact:
+
 ```bash
-# Attempting to encode FSM role as artifact
 ./scripts/encode_artifact.sh semiotic_engine/src/fsm/ideational.py
 ```
-**Automated Response**:
-```text
-❌ Structural violation: FSM role detected in artifact pipeline
-Logged to: breach/breach_logs/20231015-1423_ideational_contamination.md
-```
 
-### Protocol Bypass
+Result:
+
+* Execution halted
+* Breach logged with classification
+
+---
+
+### Manual Directory Bypass
+
 ```bash
-# Manual write to entropy_index/artifact/
 cp raw_idea.md philosophy/entropy_index/artifact/gen1_illegal/
 ```
-**Detection**: SHA-256 mismatch during next validation run
+
+Detection:
+
+* Manifest mismatch during next validation run
+* Breach entry created
 
 ---
 
-## 🧠 Design Rationale
+## Design Rationale
 
-### Why Three-Tier Separation?
-1. **Falsifiability** - Clear failure modes when boundaries break
-2. **Mutation Tracking** - Artifacts vs system roles evolve differently
-3. **Containment** - Raw inputs can't corrupt formalized traces
+### Separation of Domains
+
+Artifacts, system roles, and FSM logic serve different purposes and follow different mutation rules. Separation ensures:
+
+* Deterministic validation
+* Clear lineage tracking
+* Reduced cross-domain coupling
+* Traceable failure modes
 
 ### Metric Independence
-| Domain | Primary Metric | Source |
-|--------|----------------|--------|
-| Artifact | δTension | Human-assigned |
-| System | CMS | Code/log-derived |
-| FSM | WEIGHT | Declared in source |
+
+| Domain   | Primary Metric | Source                  |
+| -------- | -------------- | ----------------------- |
+| Artifact | Tension        | Manifest input          |
+| System   | Entropy delta  | Hash comparison         |
+| FSM      | Weight         | Source code declaration |
+
+Metrics are evaluated independently and are not interchangeable.
 
 ---
 
-## 📜 Related Protocols
-- [Weight Verification](verification/weights.md)
-- [Ethical Constraints](ETHICS.md#accountability-framework)
-- [Mutation Tracking](USAGE.md#generation-workflows)
+## Related Documentation
+
+* [Weight Verification](verification/weights.md)
+* [Ethical Constraints](ETHICS.md#accountability-framework)
+* [Mutation Tracking](USAGE.md#generation-workflows)
 
 ---
 
-**This document is epistemically binding.**  
-Violations render traces non-falsifiable and must be purged.
+This policy defines enforceable structural constraints.
+Violations result in logged breaches and may invalidate affected traces.
 
-
+---
