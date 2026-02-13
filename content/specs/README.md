@@ -3,7 +3,7 @@
 *Epistemic Trace Infrastructure*
 
 [![Documentation Status](https://img.shields.io/badge/docs-validation-4CAF50)](docs/FALSIFICATION.md)
-[![Contradiction Protocol](https://img.shields.io/badge/contradiction_flow-archived-9C27B0)](docs/CONTRADICTION_FLOW.md)
+[![Contradiction Protocol](https://img.shields.io/badge/contradiction_flow-active-4CAF50)](docs/CONTRADICTION_FLOW.md)
 
 A deterministic snapshot–invariant–drift system for controlled artifact mutation and traceable state transitions.
 
