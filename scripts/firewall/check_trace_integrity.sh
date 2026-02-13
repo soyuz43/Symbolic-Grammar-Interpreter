@@ -23,15 +23,16 @@ log_breach() {
   local category="${4:-structural}"
 
   local branch; branch=$(git rev-parse --abbrev-ref HEAD 2>/dev/null || echo "no-branch")
+  local branch_safe="${branch//\//_}"
   local timestamp; timestamp=$(date +%Y%m%d_%H%M%S)
   local date_dir="$BREACH_LOGS_DIR/$(date +%Y/%m/%d)"
   local severity_dir="$BREACH_LOGS_DIR/by_severity/${severity,,}"
-  local branch_dir="$BREACH_LOGS_DIR/by_branch/$branch"
+  local branch_dir="$BREACH_LOGS_DIR/by_branch/$branch_safe"
   local category_dir="$BREACH_LOGS_DIR/by_category/$category"
 
   mkdir -p "$date_dir" "$severity_dir" "$branch_dir" "$category_dir"
 
-  local log_id="${timestamp}_${branch}_${severity,,}_${category}"
+  local log_id="${timestamp}_${branch_safe}_${severity,,}_${category}"
   local log_path="$date_dir/$log_id.md"
 
   cat > "$log_path" <<EOF
@@ -47,7 +48,7 @@ EOF
 
   ln -sf "../../../$log_path" "$severity_dir/${log_id}.md"
   ln -sf "../../../$log_path" "$branch_dir/${timestamp}_${severity,,}_${category}.md"
-  ln -sf "../../../$log_path" "$category_dir/${timestamp}_${branch}_${severity,,}.md"
+  ln -sf "../../../$log_path" "$category_dir/${timestamp}_${branch_safe}_${severity,,}.md"
 
   echo "Breach logged to: $log_path (classified)"
   
@@ -56,7 +57,6 @@ EOF
     echo "- $(date -u): [$branch] $msg ($category)" >> "$summary_file"
   fi
 }
-
 # Checks if a directory exists and is not empty; logs breach if missing or empty.
 check_directory() {
   local dir="$1"
