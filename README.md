@@ -1,73 +1,122 @@
-# Symbolic Grammar Interpreter
+**Epistemic Trace Engine**
 
-> A recursive symbolic system for controlled evolution of structured knowledge.
+If you want to keep the repo name unchanged for now, just change the title line.
+
+---
+
+# Epistemic Trace Engine
+
+> A deterministic snapshot–invariant–drift engine for controlled, auditable change.
+
+---
+
+## What This Is
+
+Epistemic Trace Engine is a structured change-control system.
+
+It enforces:
+
+* **Snapshot capture** of artifacts
+* **Explicit invariants** over structured inputs
+* **Drift measurement** across generations
+* **Immutable trace logging**
+* **Typed breach reporting**
+
+It is not a symbolic AI system.
+It is not a semantic oracle.
+
+It is an auditable mutation pipeline.
 
 ---
 
 ## Why It Exists
 
-Modern software systems drift.  
-Documentation rots.  
-Specifications contradict themselves.
+Systems drift.
 
-**This project builds an infrastructure layer** to:
-- Detect semantic contradictions before they metastasize
-- Track evolution of knowledge as immutable, auditable traces
-- Formalize change processes without enforcing rigidity
+Documentation diverges from implementation.
+Assumptions change without being recorded.
+Contradictions accumulate silently.
 
-Instead of fighting drift, it **harnesses it as an input**.
+This project enforces:
 
----
+* Deterministic traceability
+* Boundary separation (raw → staged → validated)
+* Reproducible mutation under constraint
+* Explicit logging of structural pressure
 
-## How It Works
-
-Every idea, spec, or system trace passes through an enforced lifecycle:
-- Proposed ideas enter a *staging environment*.
-- Contradictions are detected, logged, and metabolized.
-- Only validated evolutions are committed into immutable *versions*.
-- Structural validation scripts continuously monitor boundary integrity.
-
-**Mutation is allowed. Corruption is not.**
+Change is allowed.
+Silent corruption is not.
 
 ---
 
-## Folder Overview
+## Core Model
 
-| Folder | Purpose |
-|:---|:---|
-| `/content/versions/` | Immutable version history of finalized traces |
-| `/content/staging/` | In-progress drafts and pending contradictions |
-| `/content/audit_logs/` | Breach detection and audit reports |
-| `/content/raw_inputs/` | Incoming, unreviewed proposals |
-| `/content/specs/` | Documentation, protocols, and methodology |
-| `/content/conflict_maps/` | Contradiction libraries and pressure logs |
-| `/engine/` | Core symbolic engine (FSM, dialectical parsers) |
-| `/scripts/` | CLI automation tools for validation and mutation |
+Every artifact evolves through generations:
+
+1. A **snapshot** is captured.
+2. Invariants are evaluated.
+3. Pressure (e.g., contradictions) is processed.
+4. A new generation is created with:
+
+   * Manifest
+   * Entropy hash
+   * Drift report
+   * Breach metadata (if applicable)
+
+Each generation is immutable once written.
+
+Drift is measurable and attributable.
 
 ---
 
-## Core Engineering Principles
+## Repository Structure
 
-- **Traceability** — Every transformation is recorded, compared, and versioned
-- **Falsifiability** — Contradictions are not errors; they are signals
-- **Structural Integrity** — Strict separation of raw, staged, and validated domains
-- **Controlled Drift** — Evolution is encouraged, but auditable
+| Folder                    | Purpose                            |
+| :------------------------ | :--------------------------------- |
+| `/content/versions/`      | Immutable generation history       |
+| `/content/staging/`       | Draft artifacts pending mutation   |
+| `/content/audit_logs/`    | Validation and breach reports      |
+| `/content/raw_inputs/`    | Unprocessed artifacts              |
+| `/content/specs/`         | Protocol documentation             |
+| `/content/conflict_maps/` | Structured contradiction libraries |
+| `/engine/`                | Core snapshot and validation logic |
+| `/scripts/`               | CLI automation tools               |
+
+---
+
+## Engineering Principles
+
+* **Determinism** — Same inputs produce identical hashes and reports.
+* **Explicit Contracts** — All constraints are declared and testable.
+* **Immutable Generations** — No silent mutation of history.
+* **Typed Breaches** — Violations are classified, not narrated.
+* **Separation of Domains** — Raw, staged, and validated artifacts are isolated.
+
+---
+
+## Current Capabilities
+
+* Artifact mutation across generations
+* Manifest hashing and entropy delta measurement
+* Contradiction pressure ingestion (YAML-based)
+* Collapse and tension gating logic
+* Generation-level drift reports
 
 ---
 
 ## Quickstart
 
 ```bash
-# Scan incoming ideas
-./scripts/scan_unencoded_artifacts.sh
-
-# Encode an idea under contradiction pressure
+# Encode an artifact
 ./scripts/encode_artifact.sh <artifact_name>
 
-# Track system metabolism and entropy shifts
+# Mutate artifact under contradiction pressure
+./scripts/falsification/mutate_artifact.sh <artifact> <prev_gen> <new_gen> --pressure <yaml>
+
+# Generate entropy trace
 ./scripts/generate_entropy_trace.sh <role> <generation>
 
-# Validate full system integrity
+# Validate system integrity
 ./scripts/validate_topography.sh --strict
 ```
 
@@ -75,18 +124,28 @@ See `/content/specs/USAGE.md` for full command reference.
 
 ---
 
-## Explore More
+## Documentation
 
-- [Epistemic Trace Infrastructure Overview](./content/specs/OVERVIEW.md)
-- [Contradiction Management Lifecycle](./content/specs/CONTRADICTION_FLOW.md)
-- [Falsification Enforcement Protocols](./content/specs/FALSIFICATION.md)
-
-Advanced workflows begin where hallucinated coherence ends. [Begin here.](/invitation/README.md)
-
+* [System Overview](./content/specs/OVERVIEW.md)
+* [Contradiction Flow](./content/specs/CONTRADICTION_FLOW.md)
+* [Falsification Protocol](./content/specs/FALSIFICATION.md)
 
 ---
 
-# **This is the infrastructure for recursive integrity.**
+## Scope
+
+This project implements a structured trace-and-drift engine.
+
+It does not attempt to:
+
+* Automatically determine semantic truth
+* Replace testing or formal verification
+* Eliminate all forms of contradiction in natural language
+
+It enforces controlled, auditable evolution of structured artifacts.
 
 ---
 
+## Status
+
+Active refactor underway (migration from shell-based orchestration to typed Go implementation for deterministic parsing and invariant enforcement).
