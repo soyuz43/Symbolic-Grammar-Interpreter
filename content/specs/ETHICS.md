@@ -1,144 +1,158 @@
-# ETHICS.md — Epistemic Integrity Charter
-
-```mermaid
-flowchart TD
-    A[Ethical Use] --> B[Preserve Ontological Boundaries]
-    A --> C[Respect Immutability]
-    A --> D[Prevent Epistemic Harm]
-    B --> E[Artifact/System Separation]
-    C --> F[No Gen1 Tampering]
-    D --> G[Transparent Tension Metrics]
-```
+# ETHICS.md — Integrity and Governance Policy
 
 ---
 
-## 🛡️ Principles of Ethical Conduct
+## Purpose
 
-### 1. **Ontological Non-Contamination**
-```mermaid
-classDiagram
-    class ArtifactDomain {
-        +Human-authored
-        +Subjective metrics
-        +Immutable Gen1
-    }
-    class SystemDomain {
-        +Code-derived
-        +Objective extraction
-        +Versioned gens
-    }
-    ArtifactDomain --|> EthicalBoundary : Protected
-    SystemDomain --|> EthicalBoundary : Protected
-```
-- Never intentionally blur artifact/system boundaries  
-- Report accidental overlaps via [breach protocol](#reporting-breach)  
+This document defines conduct requirements and enforcement standards for contributors to the Epistemic Trace Infrastructure.
 
-### 2. **Trace Immutability Covenant**
-- **Gen1 Traces**: Sacred baseline for falsifiability  
-- **Prohibited**:  
-  ```bash
-  # ANY modification to gen1_* directories
-  rm -rf entropy_index/artifact/gen1_*
-  sed -i '...' entropy_index/artifact/gen1_*/interpretation.md
-  ```
+The objective is to:
 
-### 3. **Metric Transparency**
-- Disclose all δTension calibration methods in [interpretation.md](USAGE.md#interpretation-files)  
-- Document FSM weight sources in [semiotic_engine/docs/](semiotic_engine/docs/weights.md)  
+* Preserve domain separation
+* Maintain immutable trace integrity
+* Prevent unauthorized mutation or falsification
+* Ensure transparency of metrics and validation
+
+All violations are subject to automated logging and review.
 
 ---
 
-## 🚫 Prohibited Actions
+## Governance Principles
 
-### Absolute Taboos
-| Action | Consequence | 
-|--------|-------------|
-| Forging SHA-256 hashes | Permanent ban from contribution |
-| Bypassing quarantine | Blacklist of all related artifacts |
-| Using system roles as artifacts | Ontological purge procedure |
+### 1. Domain Separation
 
-### Conditional Restrictions
-```mermaid
-pie
-    title Conditional Ethics Violations
-    "Modifying Collapse Logs" : 35
-    "Overriding Tension Metrics" : 25
-    "Silencing Paradox Detection" : 40
-```
-## Prohibited Testing Practices  
-❌ Artificially inflate CMS via:  
-   - Silent error suppression in FSMs  
-   - Overreporting recombinations  
-❌ Manipulate weight alignment thresholds  
----
+Artifacts, system roles, and FSM logic are independent domains with distinct mutation rules.
 
-## 🔍 Accountability Framework
+Requirements:
 
-### Traceability Requirements
-```mermaid
-sequenceDiagram
-    Contributor->>System: Submit change
-    System->>Logs: Record git hash
-    Logs->>EntropyIndex: Cross-reference
-    EntropyIndex->>Validator: Automated ethics check
-    Validator-->>Contributor: Pass/Fail report
-```
+* No cross-domain writes
+* No reinterpretation of system code as artifact data
+* No reuse of artifact identifiers within system domains
+* All cross-domain interactions must pass through authorized tooling
 
-### Audit Process
-1. **Monthly**: Automated [ontology validation](CONTRIBUTING.md#validation-protocol)  
-2. **Quarterly**: Human-led [epistemic audit](philosophy/audit/audit_protocol.md)  
-3. **Ad Hoc**: Triggered by [threshold breach](#thresholds)  
+Violations are logged and may invalidate affected traces.
 
 ---
 
-## 🌍 Societal Responsibility
+### 2. Trace Immutability
 
-### Preventative Measures
-- **Avoid Weaponization**: Never use entropy traces to:  
-  - Manipulate consensus reality perception  
-  - Erase competing philosophical frameworks  
-- **Bias Mitigation**:  
-  ```bash
-  # Run bias detection
-  ../../scripts/detect_bias.sh --domain=artifact
-  ../../scripts/detect_bias.sh --domain=system
-  ```
+Generation 1 traces are immutable baselines.
 
-### Beneficial Use Mandate
-```mermaid
-flowchart LR
-    Research[Scholarly Research] -->|Encouraged| A[Open Philosophy]
-    A --> B[Democratic Discourse]
-    Commercial[Commercial Use] -->|Requires| C[Ethics Committee Approval]
-```
-
----
-
-## 🚨 Reporting Breaches
-
-### Thresholds
-| Severity Level | Response Time | Action |
-|----------------|---------------|--------|
-| **Minor** (Accidental quarantine bypass) | 7 days | Retraining |  
-| **Major** (Gen1 tampering attempt) | 24 hours | System-wide rollback |  
-| **Critical** (Ontological collapse risk) | 1 hour | Full epistemic lockdown |
-
-### Reporting Protocol
-1. **Immediate Action**:  
-   ```bash
-   # Freeze affected domain
-   ../../scripts/lockdown.sh --domain=artifact --reason="breach"
-   ```
-2. **Notify**:  
-   - Ethics Committee: kebekad673@proton.me  
-   - Security Lead: kebekad673@proton.me
-3. **Document**: File breach report in [philosophy/breach/breach_logs/](philosophy/breach/breach_logs/)
-
----
+Prohibited:
 
 ```bash
-# Verify ethical compliance
-../../scripts/validate_ethics.sh --full
+rm -rf entropy_index/artifact/gen1_*
+sed -i '...' entropy_index/artifact/gen1_*/interpretation.md
 ```
 
+Any modification to Generation 1 directories is considered a critical integrity breach.
 
+---
+
+### 3. Metric Transparency
+
+All mutation-relevant metrics must be documented.
+
+Requirements:
+
+* Tension calibration methods must be disclosed in interpretation files.
+* FSM weight definitions must be documented in source-level documentation.
+* Entropy calculations must remain reproducible and deterministic.
+
+Undocumented metric adjustments are not permitted.
+
+---
+
+## Prohibited Actions
+
+### Critical Violations
+
+| Action                      | Consequence                            |
+| --------------------------- | -------------------------------------- |
+| Hash forgery or tampering   | Permanent contribution revocation      |
+| Manual bypass of quarantine | Invalidated artifact lineage           |
+| Cross-domain contamination  | Breach log classification and rollback |
+
+---
+
+### Integrity Violations
+
+The following are prohibited:
+
+* Artificial suppression of FSM errors to manipulate metrics
+* Manual alteration of collapse logs without trace metadata
+* Modification of entropy values outside authorized tooling
+* Silent adjustment of validation thresholds
+
+---
+
+## Accountability Controls
+
+### Trace Logging
+
+All mutations must:
+
+1. Record the associated Git commit hash
+2. Record manifest hash before and after mutation
+3. Log any breach classification
+4. Maintain generation lineage continuity
+
+Automated validation runs must pass prior to commit approval.
+
+---
+
+### Audit Schedule
+
+* Automated validation: executed on each commit
+* Periodic structural review: repository-wide validation scans
+* Manual audit: conducted when a threshold breach is detected
+
+Audit artifacts are stored in the breach logs directory.
+
+---
+
+## Responsible Use
+
+This repository is designed for structured change control and trace validation.
+
+It must not be used to:
+
+* Fabricate or conceal artifact history
+* Misrepresent system state transitions
+* Override validation safeguards for expediency
+* Suppress breach logging
+
+All contributors are responsible for maintaining auditability and reproducibility.
+
+---
+
+## Breach Reporting
+
+### Severity Levels
+
+| Level    | Definition                            | Required Response                       |
+| -------- | ------------------------------------- | --------------------------------------- |
+| Minor    | Non-blocking boundary violation       | Corrective action within defined window |
+| Major    | Attempted immutability violation      | Immediate remediation and review        |
+| Critical | Integrity compromise or falsification | System freeze and rollback              |
+
+---
+
+### Reporting Procedure
+
+1. Execute validation tooling:
+
+   ```bash
+   ../../scripts/validate_ethics.sh --full
+   ```
+2. Log breach in:
+
+   ```
+   philosophy/breach/breach_logs/
+   ```
+3. Notify repository maintainers if manual intervention is required.
+
+---
+
+This policy defines enforceable contribution standards.
+Violations may invalidate trace history and result in contribution restrictions.
