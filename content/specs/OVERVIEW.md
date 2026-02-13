@@ -96,7 +96,7 @@ flowchart TD
     A[FAQ.md#gen1] --> B[[STRUCTURE.md#immutability]]
     A --> C[[USAGE.md#artifact-encoding]]
     C --> D[[scripts/encode_artifact.sh]]
-    B --> E[[philosophy/entropy_index/artifact/]]
+    B --> E[[specs/entropy_index/artifact/]]
     
     style A stroke:#FF9800
     style B stroke:#4CAF50
