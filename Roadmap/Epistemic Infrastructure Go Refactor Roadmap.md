@@ -1080,4 +1080,4 @@ That makes your “pressure gate” deterministic and testable.
 Go will not automatically give you “canonical YAML” for hashing unless you define canonicalization rules. YAML libraries can reorder keys and serialize floats differently. If hashing is central, you should hash a canonical format you control (e.g., sorted `key=value` lines, or canonical JSON), not whatever a YAML serializer happens to output.
 
 Analytically: refactoring to Go will make the pressure pipeline reliable because it replaces brittle line-oriented heuristics with typed YAML unmarshalling, explicit schema validation, and deterministic canonicalization for hashing.
-S
+SSS
