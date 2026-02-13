@@ -2,8 +2,9 @@
 
 *Epistemic Trace Infrastructure*
 
-[![Documentation Status](https://img.shields.io/badge/docs-validation-4CAF50)](docs/FALSIFICATION.md)
-[![Contradiction Protocol](https://img.shields.io/badge/contradiction_flow-active-4CAF50)](docs/CONTRADICTION_FLOW.md)
+[![Documentation Status](https://img.shields.io/badge/docs-validation-4CAF50)](content/specs/FALSIFICATION.md)  
+[![Contradiction Protocol](https://img.shields.io/badge/contradiction_flow-active-4CAF50)](content/specs/CONTRADICTION_FLOW.md)
+
 
 A deterministic snapshot–invariant–drift system for controlled artifact mutation and traceable state transitions.
 
@@ -109,10 +110,9 @@ contradictions/library/
 
 See:
 
-* [Falsification Protocol](docs/FALSIFICATION.md)
-* [Contradiction Workflow](docs/CONTRADICTION_FLOW.md)
-* [Usage Guide](docs/USAGE.md)
-
+* [Falsification Protocol](content/specs/FALSIFICATION.md)
+* [Contradiction Workflow](content/specs/CONTRADICTION_FLOW.md)
+* [Usage Guide](content/specs/USAGE.md)
 ---
 
 ## Contribution Controls
@@ -132,8 +132,8 @@ Run:
 
 See:
 
-* [Contribution Guide](docs/CONTRIBUTING.md)
-* [Ethical Constraints](docs/ETHICS.md)
+* [Contribution Guide](content/specs/CONTRIBUTING.md)
+* [Ethical Constraints](content/specs/ETHICS.md)
 
 ---
 
