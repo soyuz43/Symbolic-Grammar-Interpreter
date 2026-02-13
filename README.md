@@ -1,9 +1,3 @@
-**Epistemic Trace Engine**
-
-If you want to keep the repo name unchanged for now, just change the title line.
-
----
-
 # Epistemic Trace Engine
 
 > A deterministic snapshot–invariant–drift engine for controlled, auditable change.
