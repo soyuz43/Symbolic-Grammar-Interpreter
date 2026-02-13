@@ -1,11 +1,3 @@
-Below is a stripped-down, governance-legible rewrite.
-No emojis.
-Less philosophy.
-Clearer compliance / audit framing.
-Retains documentation links and structure.
-
----
-
 # README.md
 
 *Epistemic Trace Infrastructure*
