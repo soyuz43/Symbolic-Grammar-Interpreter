@@ -14,7 +14,7 @@ echo "# Extracted contradictions from: $INPUT" > "$OUTPUT"
 echo "---" >> "$OUTPUT"
 
 grep -niE "(not.*but)|(paradox)|(contradiction)|(cannot.*yet)|(recursive.*failure)|(assumes.*but.*denies)" "$INPUT" | while IFS=: read -r line text; do
-  kind=$(echo "$text" | grep -oE 'paradox|contradiction|recursive|cannot|denies|not' | head -n1)
+  kind=$(echo "$text" | grep -oiE 'paradox|contradiction|recursive|cannot|denies|not' | head -n1)
   conf=$(awk "BEGIN { print 0.7 + (length(\"$text\") % 10)/20 }")
   echo "- line: $line" >> "$OUTPUT"
   echo "  type: $kind" >> "$OUTPUT"
