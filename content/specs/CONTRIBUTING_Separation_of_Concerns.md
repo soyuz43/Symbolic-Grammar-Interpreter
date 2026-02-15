@@ -2,7 +2,7 @@
 
 ### 🧭 Epistemic Function
 
-This document formalizes the **ontological boundaries** and **mutation constraints** that govern the Symbolic Grammar Interpreter system.  
+This document formalizes the **ontological boundaries** and **mutation constraints** that govern the Epistemic Trace Engine.  
 It is not a directory map — it is a **semiotic contract**.
 
 No component is permitted to violate these boundaries **without triggering an epistemic breach condition**.
