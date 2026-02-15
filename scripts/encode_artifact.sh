@@ -1,17 +1,20 @@
 #!/bin/bash
 
-# encode_artifact.sh — Epistemic Formalization of Rhetorical Artifacts
+# encode_artifact.sh — Deterministic epistemic formalization of rhetorical artifacts
 # Domain: philosophy/entropy_index/artifact/
-# Usage: ./encode_artifact.sh <path-to-raw-artifact.md>
+# Usage:
+#   Interactive: ./encode_artifact.sh <artifact.md>
+#   Deterministic: Create <artifact.md.meta> with FSM_WEIGHT/TENSION/COLLAPSE, then run script
 
 set -o errexit
 set -o nounset
 set -o pipefail
 
-INPUT_FILE="$1"
+INPUT_FILE="${1:?Usage: $0 <path-to-artifact.md>}"
 ARTIFACT_NAME=$(basename "$INPUT_FILE" | sed 's/\.[^.]*$//')
 GEN="gen1"
 OUTPUT_DIR="philosophy/entropy_index/artifact/${GEN}_${ARTIFACT_NAME}"
+METADATA_FILE="${INPUT_FILE}.meta"
 
 # === Epistemic Guard: Reserved FSM roles ===
 if [[ "$ARTIFACT_NAME" =~ ^(ideational|interpersonal|textual)$ ]]; then
@@ -34,47 +37,73 @@ fi
 
 mkdir -p "$OUTPUT_DIR"
 
-# === Prompt for epistemic metrics ===
-echo "🧬 Encoding rhetorical artifact: $INPUT_FILE → $OUTPUT_DIR"
-read -rp "FSM_WEIGHT (0.0 = fluid, 1.0 = rigid): " weight
-read -rp "Tension (δ scalar): " tension
-read -rp "Collapse_Log (number of contradictions detected): " collapse
+# === Load metadata: deterministic (.meta) or interactive ===
+if [[ -f "$METADATA_FILE" ]]; then
+  echo "⚙️  Loading deterministic metadata from: $METADATA_FILE"
+  # Strict parsing: require all three keys
+  WEIGHT=$(grep -m1 '^FSM_WEIGHT=' "$METADATA_FILE" | cut -d= -f2)
+  TENSION=$(grep -m1 '^TENSION=' "$METADATA_FILE" | cut -d= -f2)
+  COLLAPSE=$(grep -m1 '^COLLAPSE=' "$METADATA_FILE" | cut -d= -f2)
+  
+  if [[ -z "$WEIGHT" || -z "$TENSION" || -z "$COLLAPSE" ]]; then
+    echo "❌ ERROR: $METADATA_FILE missing required keys (FSM_WEIGHT, TENSION, COLLAPSE)" >&2
+    exit 1
+  fi
+else
+  echo "🧬 Encoding rhetorical artifact: $INPUT_FILE → $OUTPUT_DIR"
+  read -rp "FSM_WEIGHT (0.0 = fluid, 1.0 = rigid): " WEIGHT
+  read -rp "Tension (δ scalar): " TENSION
+  read -rp "Collapse_Log (number of contradictions detected): " COLLAPSE
+  
+  # Offer to save for reproducibility
+  read -rp "Save metadata to ${METADATA_FILE} for reproducibility? (y/n): " save
+  if [[ "${save:-n}" =~ ^[Yy]$ ]]; then
+    cat > "$METADATA_FILE" <<EOF
+# Deterministic metadata for $INPUT_FILE
+# Generated: $(date -u +%Y-%m-%dT%H:%M:%SZ)
+FSM_WEIGHT=$WEIGHT
+TENSION=$TENSION
+COLLAPSE=$COLLAPSE
+EOF
+    echo "💾 Metadata saved to $METADATA_FILE (version this file for reproducibility)"
+  fi
+fi
 
 # === Create input_manifest.txt ===
 cat > "$OUTPUT_DIR/input_manifest.txt" <<EOF
 # Artifact: $ARTIFACT_NAME
 # Generation: $GEN
-# Tension: δ$tension
+# Tension: δ$TENSION
 
-FSM_WEIGHT: $weight
-Collapse_Log: $collapse
+FSM_WEIGHT: $WEIGHT
+Collapse_Log: $COLLAPSE
 
 # Hash Method: SHA-256 over normalized FSM_WEIGHT, Collapse_Log, Tension
 EOF
 
 # === Normalize manifest + hash ===
 normalize_manifest() {
-  grep -E '^(FSM_WEIGHT|Collapse_Log|Tension)' "$1" | sed 's/ //g' | LC_ALL=C sort
+  grep -E '^(FSM_WEIGHT|Collapse_Log)' "$1" | sed 's/ //g' | LC_ALL=C sort
 }
 
 generate_entropy() {
   normalize_manifest "$1" | sha256sum | awk '{print $1}'
 }
 
-entropy=$(generate_entropy "$OUTPUT_DIR/input_manifest.txt")
-echo "$entropy" > "$OUTPUT_DIR/entropy_value.txt"
+ENTROPY=$(generate_entropy "$OUTPUT_DIR/input_manifest.txt")
+echo "$ENTROPY" > "$OUTPUT_DIR/entropy_value.txt"
 
 # === Write interpretation.md ===
 cat > "$OUTPUT_DIR/interpretation.md" <<EOF
 ## Artifact Trace: $ARTIFACT_NAME — Generation 1
 
 ### Epistemic Metrics
-- FSM_WEIGHT: $weight
-- Collapse_Log: $collapse
-- Tension: δ$tension
+- FSM_WEIGHT: $WEIGHT
+- Collapse_Log: $COLLAPSE
+- Tension: δ$TENSION
 
 ### Entropy Fingerprint
-\`$entropy\`
+\`$ENTROPY\`
 
 ### Commentary
 This rhetorical artifact has been formally encoded as a symbolic trace. Its epistemic shape is determined by:
@@ -91,3 +120,4 @@ echo "🧾 Raw artifact preserved as: $OUTPUT_DIR/raw_artifact.md"
 
 # === Done ===
 echo "✅ Artifact successfully encoded: $OUTPUT_DIR"
+echo "🔑 Entropy fingerprint: $ENTROPY"

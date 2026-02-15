@@ -1,0 +1,38 @@
+name: Determinism Validation
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Generate test artifact
+        run: |
+          echo "# Test Idea" > test_idea.md
+          echo "A minimal rhetorical artifact for determinism validation." >> test_idea.md
+          cat > test_idea.md.meta <<'META'
+FSM_WEIGHT=0.5
+TENSION=4
+COLLAPSE=2
+META
+          cat > test_idea.1-to-2.meta <<'META'
+FSM_WEIGHT=0.7
+TENSION=6
+COLLAPSE=3
+META
+
+      - name: Gen1 determinism
+        run: |
+          ./scripts/encode_artifact.sh test_idea.md >/dev/null
+          cp philosophy/entropy_index/artifact/gen1_test_idea/entropy_value.txt /tmp/h1.txt
+          rm -rf philosophy/entropy_index/artifact/gen1_test_idea
+          ./scripts/encode_artifact.sh test_idea.md >/dev/null
+          diff -q /tmp/h1.txt philosophy/entropy_index/artifact/gen1_test_idea/entropy_value.txt
+
+      - name: Mutation determinism
+        run: |
+          ./scripts/falsification/mutate_artifact.sh test_idea 1 2 --meta test_idea.1-to-2.meta >/dev/null
+          cp philosophy/entropy_index/artifact/gen2_test_idea/entropy_value.txt /tmp/h2.txt
+          rm -rf philosophy/entropy_index/artifact/gen2_test_idea
+          ./scripts/falsification/mutate_artifact.sh test_idea 1 2 --meta test_idea.1-to-2.meta >/dev/null
+          diff -q /tmp/h2.txt philosophy/entropy_index/artifact/gen2_test_idea/entropy_value.txt
