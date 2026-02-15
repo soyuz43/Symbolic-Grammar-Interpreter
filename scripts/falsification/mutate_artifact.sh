@@ -1,7 +1,9 @@
 #!/bin/bash
 
-# mutate_artifact.sh — Recursively evolves a rhetorical object under contradiction
-# Usage: ./scripts/falsification/mutate_artifact.sh <artifact> <prev_gen> <new_gen> [--pressure <yaml>] [--override-pressure] [--allow-unknown-types]
+# mutate_artifact.sh — Deterministic mutation of rhetorical artifacts under contradiction pressure
+# Usage:
+#   Interactive: ./mutate_artifact.sh <artifact> <prev_gen> <new_gen> [--pressure <yaml>]
+#   Deterministic: ./mutate_artifact.sh <artifact> <prev_gen> <new_gen> --meta <file> [--pressure <yaml>]
 
 set -o errexit
 set -o nounset
@@ -13,17 +15,20 @@ TO_GEN="$3"
 shift 3
 
 PHILOSOPHY_ROOT="philosophy/entropy_index/artifact"
-FROM_DIR="${PHILOSOPHY_ROOT}/${FROM_GEN}_${ARTIFACT}"
-TO_DIR="${PHILOSOPHY_ROOT}/${TO_GEN}_${ARTIFACT}"
-
 PRESSURE=""
+META_FILE=""
 ALLOW_UNKNOWN="no"
 OVERRIDE_PRESSURE="no"
 
+# Parse flags
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --pressure)
       PRESSURE="$2"
+      shift 2
+      ;;
+    --meta)
+      META_FILE="$2"
       shift 2
       ;;
     --allow-unknown-types)
@@ -41,6 +46,14 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
+# Normalize generation names: accept "1" → convert to "gen1"
+[[ "$FROM_GEN" != gen* ]] && FROM_GEN="gen${FROM_GEN}"
+[[ "$TO_GEN" != gen* ]] && TO_GEN="gen${TO_GEN}"
+
+FROM_DIR="${PHILOSOPHY_ROOT}/${FROM_GEN}_${ARTIFACT}"
+TO_DIR="${PHILOSOPHY_ROOT}/${TO_GEN}_${ARTIFACT}"
+
+# Guards
 if [[ "$ARTIFACT" =~ ^(ideational|interpersonal|textual)$ ]]; then
   printf "❌ Cannot mutate system FSMs with this script\n" >&2
   exit 1
@@ -58,36 +71,66 @@ fi
 
 mkdir -p "$TO_DIR"
 
-printf "🔍 Previous Manifest:\n"
-cat "$FROM_DIR/input_manifest.txt"
-printf "\n🧠 Input new epistemic values for %s:\n" "$TO_GEN"
-
-read -rp "FSM_WEIGHT (0.0–1.0): " weight
-read -rp "Tension (δ): " tension
-read -rp "Collapse_Log (integer): " collapse
+# Load metadata deterministic (.meta) or interactive
+if [[ -n "$META_FILE" ]]; then
+  if [[ ! -f "$META_FILE" ]]; then
+    printf "❌ Metadata file not found: %s\n" "$META_FILE" >&2
+    exit 1
+  fi
+  printf "⚙️  Loading deterministic mutation metadata from: %s\n" "$META_FILE"
+  WEIGHT=$(grep -m1 '^FSM_WEIGHT=' "$META_FILE" | cut -d= -f2)
+  TENSION=$(grep -m1 '^TENSION=' "$META_FILE" | cut -d= -f2)
+  COLLAPSE=$(grep -m1 '^COLLAPSE=' "$META_FILE" | cut -d= -f2)
+  
+  if [[ -z "$WEIGHT" || -z "$TENSION" || -z "$COLLAPSE" ]]; then
+    printf "❌ ERROR: %s missing required keys (FSM_WEIGHT, TENSION, COLLAPSE)\n" "$META_FILE" >&2
+    exit 1
+  fi
+else
+  printf "🔍 Previous Manifest:\n"
+  cat "$FROM_DIR/input_manifest.txt"
+  printf "\n🧠 Input new epistemic values for %s:\n" "$TO_GEN"
+  read -rp "FSM_WEIGHT (0.0–1.0): " WEIGHT
+  read -rp "Tension (δ): " TENSION
+  read -rp "Collapse_Log (integer): " COLLAPSE
+  
+  # Offer to save metadata
+  read -rp "Save metadata to ${ARTIFACT}.${FROM_GEN}-to-${TO_GEN}.meta? (y/n): " save
+  if [[ "${save:-n}" =~ ^[Yy]$ ]]; then
+    META_SAVE="${ARTIFACT}.${FROM_GEN}-to-${TO_GEN}.meta"
+    cat > "$META_SAVE" <<EOF
+# Mutation meta ${FROM_GEN}_${ARTIFACT} → ${TO_GEN}_${ARTIFACT}
+# Generated: $(date -u +%Y-%m-%dT%H:%M:%SZ)
+FSM_WEIGHT=$WEIGHT
+TENSION=$TENSION
+COLLAPSE=$COLLAPSE
+EOF
+    printf "💾 Metadata saved to %s\n" "$META_SAVE"
+  fi
+fi
 
 # Validate inputs
-if ! awk "BEGIN{exit !($weight >= 0 && $weight <= 1)}"; then
+if ! awk "BEGIN{exit !($WEIGHT >= 0 && $WEIGHT <= 1)}"; then
   printf "❌ Invalid FSM_WEIGHT\n" >&2
   exit 1
 fi
 
-if ! awk "BEGIN{exit !(($tension ~ /^[0-9.]+$/) && $tension >= 0)}"; then
+if ! awk "BEGIN{exit !(($TENSION ~ /^[0-9.]+$/) && $TENSION >= 0)}"; then
   printf "❌ Invalid Tension value\n" >&2
   exit 1
 fi
 
-if ! [[ "$collapse" =~ ^[0-9]+$ ]]; then
+if ! [[ "$COLLAPSE" =~ ^[0-9]+$ ]]; then
   printf "❌ Collapse_Log must be integer\n" >&2
   exit 1
 fi
 
-# === Copy raw artifact
+# Copy raw artifact
 if [[ -f "$FROM_DIR/raw_artifact.md" ]]; then
   cp "$FROM_DIR/raw_artifact.md" "$TO_DIR/raw_artifact.md"
 fi
 
-# === Process pressure YAML if provided
+# Process pressure YAML if provided
 if [[ -n "$PRESSURE" ]]; then
   if [[ ! -f "$PRESSURE" ]]; then
     printf "❌ Pressure file not found: %s\n" "$PRESSURE" >&2
@@ -100,52 +143,37 @@ if [[ -n "$PRESSURE" ]]; then
     exit 1
   fi
 
-  echo "🔬 Validating contradiction impact from $PRESSURE..."
-echo "DEBUG: Reading pressure file: $PRESSURE" >&2
-ls -la "$PRESSURE" >&2
+  printf "🔬 Validating contradiction impact from %s...\n" "$PRESSURE"
+  
   total_weight=0
   contradiction_count=0
   unknown_types=()
 
-    echo "DEBUG: PRESSURE=[$PRESSURE]" >&2
-    ls -la "$PRESSURE" >&2
-while IFS= read -r line || [[ -n "$line" ]]; do
-    echo "RAW LINE: [$line]" >&2
-  # Skip empty lines and comments
-  [[ -z "$line" || "$line" =~ ^[[:space:]]*# ]] && continue
-
-    echo "DEBUG: Checking line: [$line]" >&2
-    echo "DEBUG: Does it contain type? $([[ "$line" == *"type:"* ]] && echo yes || echo no)" >&2
-    echo "FORCING MATCH" >&2
-    ctype="Recursive"
-    ((contradiction_count++))
-    echo "DEBUG: Forced contradiction type: $ctype" >&2
-  # Match list items with type field
-  if [[ "$line" == *"type:"* ]]; then
-    ctype="Recursive"
-    ((contradiction_count++))
-    echo "DEBUG: Found contradiction type: $ctype" >&2
-    if [[ ! -f "philosophy/contradictions/typologies/${ctype}.yaml" ]]; then
-      if [[ "$ALLOW_UNKNOWN" == "yes" ]]; then
-        unknown_types+=("$ctype")
-      else
-        printf "❌ Unknown contradiction type: %s\n" "$ctype" >&2
-        exit 1
+  while IFS= read -r line || [[ -n "$line" ]]; do
+    [[ -z "$line" || "$line" =~ ^[[:space:]]*# ]] && continue
+    
+    # Extract contradiction type
+    if [[ "$line" == *"type:"* ]]; then
+      ctype=$(echo "$line" | sed -n 's/.*type:[[:space:]]*\([^,}]*\).*/\1/p' | tr -d '"')
+      [[ -z "$ctype" ]] && continue
+      ((contradiction_count++))
+      
+      if [[ ! -f "philosophy/contradictions/typologies/${ctype}.yaml" ]]; then
+        if [[ "$ALLOW_UNKNOWN" == "yes" ]]; then
+          unknown_types+=("$ctype")
+        else
+          printf "❌ Unknown contradiction type: %s\n" "$ctype" >&2
+          exit 1
+        fi
       fi
     fi
-  fi
-
-  # Match confidence field
-  if [[ "$line" =~ confidence:[[:space:]]*([0-9.]+) ]]; then
-      conf="${BASH_REMATCH[1]:-0}"
-    total_weight=$(awk -v total="$total_weight" -v add="$conf" 'BEGIN { printf "%.4f", total + add }')
-    echo "DEBUG: Found confidence: $conf, total: $total_weight" >&2
-    total_weight=$(awk -v total="$total_weight" -v add="$conf" 'BEGIN { printf "%.4f", total + add }')
-    echo "DEBUG: Found confidence: $conf, total: $total_weight" >&2
-  fi
-done < "$PRESSURE"
-
-echo "DEBUG: Loop completed, count=$contradiction_count" >&2
+    
+    # Extract confidence
+    if [[ "$line" =~ confidence:[[:space:]]*([0-9.]+) ]]; then
+      conf="${BASH_REMATCH[1]}"
+      total_weight=$(awk -v total="$total_weight" -v add="$conf" 'BEGIN { printf "%.4f", total + add }')
+    fi
+  done < "$PRESSURE"
 
   avg_weight="0"
   if (( contradiction_count > 0 )); then
@@ -157,32 +185,32 @@ echo "DEBUG: Loop completed, count=$contradiction_count" >&2
 
   printf "📊 Contradictions: %s\n📈 Avg. confidence: %s\n" "$contradiction_count" "$avg_weight"
 
-  if (( collapse < expected_collapse )) && [[ "$OVERRIDE_PRESSURE" != "yes" ]]; then
-    printf "❌ ERROR: Collapse_Log (%s) below expected (%s)\n" "$collapse" "$expected_collapse" >&2
+  if (( COLLAPSE < expected_collapse )) && [[ "$OVERRIDE_PRESSURE" != "yes" ]]; then
+    printf "❌ ERROR: Collapse_Log (%s) below expected (%s)\n" "$COLLAPSE" "$expected_collapse" >&2
     exit 1
   fi
 
-  if awk "BEGIN{exit !($tension < $min_tension)}" && [[ "$OVERRIDE_PRESSURE" != "yes" ]]; then
-    printf "❌ ERROR: Tension (δ%s) below recommended minimum (δ%s)\n" "$tension" "$min_tension" >&2
+  if awk "BEGIN{exit !($TENSION < $min_tension)}" && [[ "$OVERRIDE_PRESSURE" != "yes" ]]; then
+    printf "❌ ERROR: Tension (δ%s) below recommended minimum (δ%s)\n" "$TENSION" "$min_tension" >&2
     exit 1
   fi
 
   cp "$PRESSURE" "$TO_DIR/contradictions.yaml"
 fi
 
-# === Write Manifest
+# Write Manifest
 cat > "$TO_DIR/input_manifest.txt" <<EOF
 # Artifact: $ARTIFACT
 # Generation: $TO_GEN
-# Tension: δ$tension
+# Tension: δ$TENSION
 
-FSM_WEIGHT: $weight
-Collapse_Log: $collapse
+FSM_WEIGHT: $WEIGHT
+Collapse_Log: $COLLAPSE
 EOF
 
-# === Entropy hash
+# Entropy hash
 normalize_manifest() {
-  grep -E '^(FSM_WEIGHT|Collapse_Log|Tension)' "$1" | sed 's/ //g' | LC_ALL=C sort
+  grep -E '^(FSM_WEIGHT|Collapse_Log)' "$1" | sed 's/ //g' | LC_ALL=C sort
 }
 
 hash_entropy() {
@@ -194,6 +222,7 @@ hash_entropy "$TO_DIR/input_manifest.txt" > "$TO_DIR/entropy_value.txt"
 from_hash=$(<"$FROM_DIR/entropy_value.txt")
 to_hash=$(<"$TO_DIR/entropy_value.txt")
 
+# Hamming distance
 compute_hamming_distance() {
   local h1="$1" h2="$2" hamming=0
   b1=$(xxd -r -p <<< "$h1" | xxd -b -c 32 | awk '{for(i=2;i<=NF;i++) printf $i}')
@@ -213,24 +242,24 @@ prev_collapse=$(grep "Collapse_Log" "$FROM_DIR/input_manifest.txt" | awk '{print
 cat > "$TO_DIR/entropy_diff_manifest.md" <<EOF
 ## Mutation Drift Report: $FROM_GEN → $TO_GEN
 
-- FSM Weight: $prev_weight → $weight
-- Collapse Count: $prev_collapse → $collapse
+- FSM Weight: $prev_weight → $WEIGHT
+- Collapse Count: $prev_collapse → $COLLAPSE
 - ΔEntropy (Hamming): $delta_entropy bits
 EOF
 
-# === Interpretation
+# Interpretation
 cat > "$TO_DIR/interpretation.md" <<EOF
 ## Artifact Mutation: $ARTIFACT
 
 ### Generation: $TO_GEN (from $FROM_GEN)
-- FSM Weight: $weight
-- Tension: δ$tension
-- Collapse Events: $collapse
+- FSM Weight: $WEIGHT
+- Tension: δ$TENSION
+- Collapse Events: $COLLAPSE
 
 ### Drift Analysis
 - ΔEntropy: $delta_entropy bits
-- FSM Weight: $prev_weight → $weight
-- Collapse Log: $prev_collapse → $collapse
+- FSM Weight: $prev_weight → $WEIGHT
+- Collapse Log: $prev_collapse → $COLLAPSE
 EOF
 
 if [[ -n "$PRESSURE" ]]; then
@@ -263,3 +292,5 @@ if [[ -n "$PRESSURE" ]]; then
 fi
 
 printf "✅ Mutation complete: %s\n" "$TO_DIR"
+printf "🔑 Entropy fingerprint: %s\n" "$to_hash"
+printf "📊 ΔEntropy (Hamming): %s bits\n" "$delta_entropy"
